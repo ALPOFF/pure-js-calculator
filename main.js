@@ -9,6 +9,16 @@ class Calculator {
 		}
 	}
 
+	express() {
+		return this.express
+	}
+
+
+
+	parseExpress(str) {
+		return Function(`'use strict'; return (${str})`)()
+	}
+
 	resetCalc() {
 		console.log("in reset")
 		this.express = ''
@@ -26,7 +36,7 @@ class Calculator {
 		if (this.express === '') {
 			displayInput.value = "0"
 		} else {
-			this.express = eval(this.express)
+			this.express = this.parseExpress(this.express)
 			this.result = parseInt(this.express)
 		}
 	}
@@ -63,7 +73,7 @@ class Calculator {
 
 	updateDisplay() {
 		if (this.express == 'Infinity') {
-			displayInput.value="ERROR"
+			displayInput.value = "ERROR"
 			this.resetCalc()
 		} else {
 			displayInput.value = this.express
@@ -90,50 +100,66 @@ const displayInput = document.getElementById('display')
 const prevOperand = document.querySelector('.data-previous-operand')
 const curOperand = document.querySelector('.data-current-operand')
 
-const calculator = new Calculator()
+const myCalc = new Calculator()
 
 numberButtons.forEach(button => {
 	button.addEventListener('click', () => {
-		calculator.appendNumber(button.value)
-		calculator.updateDisplay()
+		myCalc.appendNumber(button.value)
+		myCalc.updateDisplay()
+	})
+})
+
+console.log(myCalc)
+console.log('express:', myCalc.express)
+// if (myCalc.express !== '') {
+operationButtons.forEach(button => {
+	button.addEventListener('click', () => {
+		if (myCalc.express !== '') {
+			myCalc.appendOperation(button.value)
+			myCalc.updateDisplay()
+		}
 	})
 })
 
 
-if (calculator.express !== '') {
-	operationButtons.forEach(button => {
-		button.addEventListener('click', () => {
-			calculator.appendOperation(button.value)
-			calculator.updateDisplay()
-		})
-	})
-	
-	equalButton.addEventListener('click', button => {
-		calculator.compute()
-		calculator.updateDisplay()
-	})
-	
-	allClearButton.addEventListener('click', button => {
-		calculator.clearAC()
-	})
-	
-	deleteButton.addEventListener('click', button => {
-		calculator.clearDisplay()
-	})
-	
-	memoryButton.addEventListener('click', button => {
-		calculator.saveInMemory()
-		calculator.updateDisplay()
-	})
-	
-	memoryReadButton.addEventListener('click', button => {
-		calculator.readFromMmory()
-		calculator.updateDisplay()
-	})
-	
-	memoryClearButton.addEventListener('click', button => {
-		calculator.clearMemory()
-		calculator.updateDisplay()
-	})
-}
+equalButton.addEventListener('click', button => {
+	if (myCalc.express !== '') {
+		myCalc.compute()
+		myCalc.updateDisplay()
+	}
+})
+
+allClearButton.addEventListener('click', button => {
+	if (myCalc.express !== '') {
+		myCalc.clearAC()
+	}
+})
+
+deleteButton.addEventListener('click', button => {
+	if (myCalc.express !== '') {
+		myCalc.clearDisplay()
+	}
+})
+
+memoryButton.addEventListener('click', button => {
+	if (myCalc.express !== '') {
+		myCalc.saveInMemory()
+		myCalc.updateDisplay()
+	}
+})
+
+memoryReadButton.addEventListener('click', button => {
+	if (myCalc.express !== '') {
+		myCalc.readFromMmory()
+		myCalc.updateDisplay()
+	}
+})
+
+memoryClearButton.addEventListener('click', button => {
+	if (myCalc.express !== '') {
+		myCalc.clearMemory()
+		myCalc.updateDisplay()
+	}
+})
+// }
 
