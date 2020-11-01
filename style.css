@@ -24,6 +24,10 @@ input {
   margin: 2px;
 }
 
+input[type="text"]:hover {
+  cursor: default
+}
+
 input[type="button"]:hover {
   background-color: darkcyan;
   border-radius: 0;
