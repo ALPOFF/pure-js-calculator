@@ -13,10 +13,55 @@ class Calculator {
 		return this.express
 	}
 
-
+	myEval (arr) {
+			let indMulti = arr.indexOf("*")
+			let indDel = arr.indexOf("/")
+			let indPlus = arr.indexOf("+")
+			let indMinus = arr.indexOf("-")
+			let newNumber = null
+			
+			if (indMulti !== -1 && indDel !== -1) { //оба
+				if (indMulti < indDel) { //умнож тут
+					newNumber = arr[indMulti-1] * arr[indMulti+1]
+					arr.splice(indMulti-1, 3) //удаление тррех чисел
+					arr.splice(indMulti-1, 0, `${newNumber}`) //вставка на место трех чисел одного числа
+				} else {
+					newNumber = arr[indDel-1] / arr[indDel+1]
+					arr.splice(indDel-1, 3)
+					arr.splice(indDel-1, 0, `${newNumber}`)
+				}
+			} else if (indMulti !== -1 && indDel === -1) { //умножение
+					newNumber = arr[indMulti-1] * arr[indMulti+1]
+					arr.splice(indMulti-1, 3)
+					arr.splice(indMulti-1, 0, `${newNumber}`)
+			} else if (indMulti === -1 && indDel !== -1) { //деление
+					newNumber = arr[indDel-1] / arr[indDel+1]
+					arr.splice(indDel-1, 3)
+					arr.splice(indDel-1, 0, `${newNumber}`)
+			} else if (indMulti == -1 && indDel == -1) { //ни умн ни дел
+					if (indPlus === -1) {
+						newNumber = arr[indMinus-1] - arr[indMinus+1]
+						arr.splice(indMinus-1, 3)
+						arr.splice(indMinus-1, 0, `${newNumber}`)
+					} else {
+						newNumber = arr[indPlus-1] + arr[indPlus+1]
+						arr.splice(indPlus-1, 3)
+						arr.splice(indPlus-1, 0, `${newNumber}`)
+					}
+			}
+			
+			if (arr.length !== 1) {
+				this.myEval(arr)
+			} else {
+				return arr[0]
+			}
+			
+			return arr[0]
+	}
 
 	parseExpress(str) {
-		return Function(`'use strict'; return (${str})`)()
+		const arr = str.split(" ")
+		return this.myEval(arr)
 	}
 
 	resetCalc() {
@@ -42,13 +87,13 @@ class Calculator {
 	}
 
 	appendNumber(number) {
-		this.express += number
+		this.express += `${number}`
 	}
 
 	appendOperation(operation) {
 		operation === "x"
-			? this.express += '*'
-			: this.express += operation
+			? this.express += ' * '
+			: this.express += ` ${operation} `
 	}
 
 	saveInMemory() {
