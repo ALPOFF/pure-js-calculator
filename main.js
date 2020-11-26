@@ -5,62 +5,70 @@ class Calculator {
 		this.result = null;
 		this.express = ''
 		this.memory = {
-			result: null
-		}
+			result: ''
+		},
+			this.calcStatus = false
 	}
 
 	express() {
 		return this.express
 	}
 
-	myEval (arr) {
-			let indMulti = arr.indexOf("*")
-			let indDel = arr.indexOf("/")
-			let indPlus = arr.indexOf("+")
-			let indMinus = arr.indexOf("-")
-			let newNumber = null
-			
-			if (indMulti !== -1 && indDel !== -1) { //оба
-				if (indMulti < indDel) { //умнож тут
-					newNumber = arr[indMulti-1] * arr[indMulti+1]
-					arr.splice(indMulti-1, 3) //удаление тррех чисел
-					arr.splice(indMulti-1, 0, `${newNumber}`) //вставка на место трех чисел одного числа
-				} else {
-					newNumber = arr[indDel-1] / arr[indDel+1]
-					arr.splice(indDel-1, 3)
-					arr.splice(indDel-1, 0, `${newNumber}`)
-				}
-			} else if (indMulti !== -1 && indDel === -1) { //умножение
-					newNumber = arr[indMulti-1] * arr[indMulti+1]
-					arr.splice(indMulti-1, 3)
-					arr.splice(indMulti-1, 0, `${newNumber}`)
-			} else if (indMulti === -1 && indDel !== -1) { //деление
-					newNumber = arr[indDel-1] / arr[indDel+1]
-					arr.splice(indDel-1, 3)
-					arr.splice(indDel-1, 0, `${newNumber}`)
-			} else if (indMulti == -1 && indDel == -1) { //ни умн ни дел
-					if (indPlus === -1) {
-						newNumber = arr[indMinus-1] - arr[indMinus+1]
-						arr.splice(indMinus-1, 3)
-						arr.splice(indMinus-1, 0, `${newNumber}`)
-					} else {
-						newNumber = arr[indPlus-1] + arr[indPlus+1]
-						arr.splice(indPlus-1, 3)
-						arr.splice(indPlus-1, 0, `${newNumber}`)
-					}
-			}
-			
-			if (arr.length !== 1) {
-				this.myEval(arr)
+	memRes() {
+		return this.memory.result
+	}
+
+	myEval(arr) {
+		let indMulti = arr.indexOf("*")
+		let indDel = arr.indexOf("/")
+		let indPlus = arr.indexOf("+")
+		let indMinus = arr.indexOf("-")
+		let newNumber = null
+
+		if (indMulti !== -1 && indDel !== -1) { //оба
+			if (indMulti < indDel) { //умнож тут
+				newNumber = arr[indMulti - 1] * arr[indMulti + 1]
+				arr.splice(indMulti - 1, 3) //удаление тррех чисел
+				arr.splice(indMulti - 1, 0, `${newNumber}`) //вставка на место трех чисел одного числа
 			} else {
-				return arr[0]
+				newNumber = arr[indDel - 1] / arr[indDel + 1]
+				arr.splice(indDel - 1, 3)
+				arr.splice(indDel - 1, 0, `${newNumber}`)
 			}
-			
+		} else if (indMulti !== -1 && indDel === -1) { //умножение
+			newNumber = arr[indMulti - 1] * arr[indMulti + 1]
+			arr.splice(indMulti - 1, 3)
+			arr.splice(indMulti - 1, 0, `${newNumber}`)
+		} else if (indMulti === -1 && indDel !== -1) { //деление
+			newNumber = arr[indDel - 1] / arr[indDel + 1]
+			arr.splice(indDel - 1, 3)
+			arr.splice(indDel - 1, 0, `${newNumber}`)
+		} else if (indMulti == -1 && indDel == -1) { //ни умн ни дел
+			if (indPlus === -1) {
+				newNumber = arr[indMinus - 1] - arr[indMinus + 1]
+				arr.splice(indMinus - 1, 3)
+				arr.splice(indMinus - 1, 0, `${newNumber}`)
+			} else {
+				newNumber = arr[indPlus - 1] + arr[indPlus + 1]
+				arr.splice(indPlus - 1, 3)
+				arr.splice(indPlus - 1, 0, `${newNumber}`)
+			}
+		}
+
+		if (arr.length !== 1) {
+			this.myEval(arr)
+		} else {
 			return arr[0]
+		}
+
+		return arr[0]
 	}
 
 	parseExpress(str) {
+		console.log(str)
+		// return Function(`'use strict'; return (${str})`)()
 		const arr = str.split(" ")
+		console.log(str)
 		return this.myEval(arr)
 	}
 
@@ -84,29 +92,34 @@ class Calculator {
 			this.express = this.parseExpress(this.express)
 			this.result = parseInt(this.express)
 		}
+		this.calcStatus = true
 	}
 
 	appendNumber(number) {
-		this.express += `${number}`
+		if (!this.calcStatus)
+			this.express += number
 	}
 
 	appendOperation(operation) {
+		this.calcStatus = false
 		operation === "x"
 			? this.express += ' * '
 			: this.express += ` ${operation} `
 	}
 
 	saveInMemory() {
-		this.memory.result = this.result
+		console.log('save in memory', this.express, this.result)
+		this.memory.result = this.express
 		memoryIndicator.style.backgroundColor = 'green'
 	}
 
 	readFromMmory() {
+		console.log('mr:', this.memory.result)
 		this.express += this.memory.result
 	}
 
 	clearMemory() {
-		this.memory.result = null
+		this.memory.result = ''
 		memoryIndicator.style.backgroundColor = 'red'
 	}
 
@@ -154,8 +167,6 @@ numberButtons.forEach(button => {
 	})
 })
 
-console.log(myCalc)
-console.log('express:', myCalc.express)
 // if (myCalc.express !== '') {
 operationButtons.forEach(button => {
 	button.addEventListener('click', () => {
@@ -187,6 +198,7 @@ deleteButton.addEventListener('click', button => {
 })
 
 memoryButton.addEventListener('click', button => {
+	console.log('xxx:', myCalc.express)
 	if (myCalc.express !== '') {
 		myCalc.saveInMemory()
 		myCalc.updateDisplay()
@@ -194,7 +206,8 @@ memoryButton.addEventListener('click', button => {
 })
 
 memoryReadButton.addEventListener('click', button => {
-	if (myCalc.express !== '') {
+	console.log(myCalc.memRes())
+	if (myCalc.memRes() !== '') {
 		myCalc.readFromMmory()
 		myCalc.updateDisplay()
 	}
