@@ -25,25 +25,25 @@ class Calculator {
 		let indMinus = arr.indexOf("-")
 		let newNumber = null
 
-		if (indMulti !== -1 && indDel !== -1) { //оба
-			if (indMulti < indDel) { //умнож тут
+		if (indMulti !== -1 && indDel !== -1) { //div and mult
+			if (indMulti < indDel) { //mult
 				newNumber = arr[indMulti - 1] * arr[indMulti + 1]
-				arr.splice(indMulti - 1, 3) //удаление тррех чисел
-				arr.splice(indMulti - 1, 0, `${newNumber}`) //вставка на место трех чисел одного числа
+				arr.splice(indMulti - 1, 3) //delete of two numbers and operator between them
+				arr.splice(indMulti - 1, 0, `${newNumber}`) //insert of one new number insted of two num and oper
 			} else {
 				newNumber = arr[indDel - 1] / arr[indDel + 1]
 				arr.splice(indDel - 1, 3)
 				arr.splice(indDel - 1, 0, `${newNumber}`)
 			}
-		} else if (indMulti !== -1 && indDel === -1) { //умножение
+		} else if (indMulti !== -1 && indDel === -1) { //mult
 			newNumber = arr[indMulti - 1] * arr[indMulti + 1]
 			arr.splice(indMulti - 1, 3)
 			arr.splice(indMulti - 1, 0, `${newNumber}`)
-		} else if (indMulti === -1 && indDel !== -1) { //деление
+		} else if (indMulti === -1 && indDel !== -1) { //div
 			newNumber = arr[indDel - 1] / arr[indDel + 1]
 			arr.splice(indDel - 1, 3)
 			arr.splice(indDel - 1, 0, `${newNumber}`)
-		} else if (indMulti == -1 && indDel == -1) { //ни умн ни дел
+		} else if (indMulti == -1 && indDel == -1) { //addit and substr case
 			if (indPlus === -1) {
 				newNumber = arr[indMinus - 1] - arr[indMinus + 1]
 				arr.splice(indMinus - 1, 3)
@@ -54,26 +54,20 @@ class Calculator {
 				arr.splice(indPlus - 1, 0, `${newNumber}`)
 			}
 		}
-
 		if (arr.length !== 1) {
 			this.myEval(arr)
 		} else {
 			return arr[0]
 		}
-
 		return arr[0]
 	}
 
 	parseExpress(str) {
-		console.log(str)
-		// return Function(`'use strict'; return (${str})`)()
 		const arr = str.split(" ")
-		console.log(str)
 		return this.myEval(arr)
 	}
 
 	resetCalc() {
-		console.log("in reset")
 		this.express = ''
 		this.result = null;
 		this.memory.result = null;
@@ -108,13 +102,11 @@ class Calculator {
 	}
 
 	saveInMemory() {
-		console.log('save in memory', this.express, this.result)
 		this.memory.result = this.express
 		memoryIndicator.style.backgroundColor = 'green'
 	}
 
 	readFromMmory() {
-		console.log('mr:', this.memory.result)
 		this.express += this.memory.result
 	}
 
@@ -167,7 +159,6 @@ numberButtons.forEach(button => {
 	})
 })
 
-// if (myCalc.express !== '') {
 operationButtons.forEach(button => {
 	button.addEventListener('click', () => {
 		if (myCalc.express !== '') {
@@ -176,7 +167,6 @@ operationButtons.forEach(button => {
 		}
 	})
 })
-
 
 equalButton.addEventListener('click', button => {
 	if (myCalc.express !== '') {
@@ -198,7 +188,6 @@ deleteButton.addEventListener('click', button => {
 })
 
 memoryButton.addEventListener('click', button => {
-	console.log('xxx:', myCalc.express)
 	if (myCalc.express !== '') {
 		myCalc.saveInMemory()
 		myCalc.updateDisplay()
@@ -206,7 +195,6 @@ memoryButton.addEventListener('click', button => {
 })
 
 memoryReadButton.addEventListener('click', button => {
-	console.log(myCalc.memRes())
 	if (myCalc.memRes() !== '') {
 		myCalc.readFromMmory()
 		myCalc.updateDisplay()
@@ -219,5 +207,4 @@ memoryClearButton.addEventListener('click', button => {
 		myCalc.updateDisplay()
 	}
 })
-// }
 
