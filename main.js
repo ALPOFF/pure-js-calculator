@@ -49,7 +49,7 @@ class Calculator {
 				arr.splice(indMinus - 1, 3)
 				arr.splice(indMinus - 1, 0, `${newNumber}`)
 			} else {
-				newNumber = arr[indPlus - 1] + arr[indPlus + 1]
+				newNumber = parseInt(arr[indPlus - 1]) + parseInt(arr[indPlus + 1])
 				arr.splice(indPlus - 1, 3)
 				arr.splice(indPlus - 1, 0, `${newNumber}`)
 			}
@@ -74,6 +74,7 @@ class Calculator {
 	}
 
 	clearDisplay() {
+		this.calcStatus = false
 		displayInput.value = "0"
 		this.express = ''
 		this.result = null
@@ -90,8 +91,12 @@ class Calculator {
 	}
 
 	appendNumber(number) {
-		if (!this.calcStatus)
+		console.log(this.calcStatus)
+		if (!this.calcStatus) {
 			this.express += number
+			console.log(this.express)
+		}
+
 	}
 
 	appendOperation(operation) {
@@ -116,6 +121,7 @@ class Calculator {
 	}
 
 	clearAC() {
+		this.calcStatus = false
 		displayInput.value = "0"
 		this.resetCalc()
 		memoryIndicator.style.backgroundColor = 'red'
