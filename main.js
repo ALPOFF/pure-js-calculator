@@ -112,7 +112,9 @@ class Calculator {
 	}
 
 	readFromMmory() {
-		this.express += this.memory.result
+		if (this.memory.result) {
+			this.express += this.memory.result
+		}
 	}
 
 	clearMemory() {
