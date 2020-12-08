@@ -8,6 +8,7 @@ class Calculator {
 			result: ''
 		},
 			this.calcStatus = false
+		this.operStatus = false
 	}
 
 	express() {
@@ -96,14 +97,18 @@ class Calculator {
 			this.express += number
 			console.log(this.express)
 		}
-
+		this.calcStatus = false
 	}
 
 	appendOperation(operation) {
 		this.calcStatus = false
-		operation === "x"
-			? this.express += ' * '
-			: this.express += ` ${operation} `
+		if (this.operStatus == false) {
+
+			operation === "x"
+				? this.express += ' * '
+				: this.express += ` ${operation} `
+		}
+		this.operStatus = true
 	}
 
 	saveInMemory() {
@@ -133,7 +138,11 @@ class Calculator {
 		if (this.express == 'Infinity') {
 			displayInput.value = "ERROR"
 			this.resetCalc()
-		} else {
+		} else if (this.express == 'NaN') {
+			displayInput.value = "ERROR"
+			this.resetCalc()
+		}
+		else {
 			displayInput.value = this.express
 		}
 	}
