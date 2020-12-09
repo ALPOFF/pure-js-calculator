@@ -65,6 +65,7 @@ class Calculator {
 
 	parseExpress(str) {
 		const arr = str.split(" ")
+		console.log(arr)
 		return this.myEval(arr)
 	}
 
@@ -92,7 +93,6 @@ class Calculator {
 	}
 
 	appendNumber(number) {
-		console.log(this.calcStatus)
 		if (!this.calcStatus) {
 			this.express += number
 			console.log(this.express)
@@ -102,13 +102,26 @@ class Calculator {
 
 	appendOperation(operation) {
 		this.calcStatus = false
-		if (this.operStatus == false) {
 
+
+		let arr = this.express.split(" ")
+
+		if (arr[arr.length - 1] === '') { //check for prev oper, if it exist replace it with new
+			console.log('fck')
+			arr.pop()
+			arr.pop()
+			console.log(arr)
+			operation === "x"
+				? arr.push('* ')
+				: arr.push(`${operation} `)
+			this.express = arr.join(' ')
+			console.log('1', this.express)
+		} else {
 			operation === "x"
 				? this.express += ' * '
 				: this.express += ` ${operation} `
 		}
-		this.operStatus = true
+		console.log('posle:', this.express.split(" "))
 	}
 
 	saveInMemory() {
@@ -136,9 +149,6 @@ class Calculator {
 
 	updateDisplay() {
 		if (this.express == 'Infinity') {
-			displayInput.value = "ERROR"
-			this.resetCalc()
-		} else if (this.express == 'NaN') {
 			displayInput.value = "ERROR"
 			this.resetCalc()
 		}
