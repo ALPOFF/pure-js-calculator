@@ -25,7 +25,7 @@ input {
 }
 
 input[type="text"]:hover {
-  cursor: default
+  cursor: default;
 }
 
 input[type="button"]:hover {

@@ -20,47 +20,51 @@ class Calculator {
 	}
 
 	myEval(arr) {
+		console.log('jui:', arr)
 		let indMulti = arr.indexOf("*")
 		let indDel = arr.indexOf("/")
 		let indPlus = arr.indexOf("+")
 		let indMinus = arr.indexOf("-")
 		let newNumber = null
-
-		if (indMulti !== -1 && indDel !== -1) { //div and mult
-			if (indMulti < indDel) { //mult
+		if (arr.indexOf('Infinity') === -1) {
+			if (indMulti !== -1 && indDel !== -1) { //div and mult
+				if (indMulti < indDel) { //mult
+					newNumber = arr[indMulti - 1] * arr[indMulti + 1]
+					arr.splice(indMulti - 1, 3) //delete of two numbers and operator between them
+					arr.splice(indMulti - 1, 0, `${newNumber}`) //insert of one new number insted of two num and oper
+				} else {
+					newNumber = (arr[indDel - 1] / arr[indDel + 1]).toFixed(10)
+					arr.splice(indDel - 1, 3)
+					arr.splice(indDel - 1, 0, `${newNumber}`)
+				}
+			} else if (indMulti !== -1 && indDel === -1) { //mult
 				newNumber = arr[indMulti - 1] * arr[indMulti + 1]
-				arr.splice(indMulti - 1, 3) //delete of two numbers and operator between them
-				arr.splice(indMulti - 1, 0, `${newNumber}`) //insert of one new number insted of two num and oper
-			} else {
+				arr.splice(indMulti - 1, 3)
+				arr.splice(indMulti - 1, 0, `${newNumber}`)
+			} else if (indMulti === -1 && indDel !== -1) { //div
 				newNumber = (arr[indDel - 1] / arr[indDel + 1]).toFixed(10)
 				arr.splice(indDel - 1, 3)
 				arr.splice(indDel - 1, 0, `${newNumber}`)
+			} else if (indMulti == -1 && indDel == -1) { //addit and substr case check
+				if (indMinus === -1) {
+					newNumber = parseInt(arr[indPlus - 1]) + parseInt(arr[indPlus + 1])
+					arr.splice(indPlus - 1, 3)
+					arr.splice(indPlus - 1, 0, `${newNumber}`)
+				} else {
+					newNumber = arr[indMinus - 1] - arr[indMinus + 1]
+					arr.splice(indMinus - 1, 3)
+					arr.splice(indMinus - 1, 0, `${newNumber}`)
+				}
 			}
-		} else if (indMulti !== -1 && indDel === -1) { //mult
-			newNumber = arr[indMulti - 1] * arr[indMulti + 1]
-			arr.splice(indMulti - 1, 3)
-			arr.splice(indMulti - 1, 0, `${newNumber}`)
-		} else if (indMulti === -1 && indDel !== -1) { //div
-			newNumber = (arr[indDel - 1] / arr[indDel + 1]).toFixed(10)
-			arr.splice(indDel - 1, 3)
-			arr.splice(indDel - 1, 0, `${newNumber}`)
-		} else if (indMulti == -1 && indDel == -1) { //addit and substr case check
-			if (indMinus === -1) {
-				newNumber = parseInt(arr[indPlus - 1]) + parseInt(arr[indPlus + 1])
-				arr.splice(indPlus - 1, 3)
-				arr.splice(indPlus - 1, 0, `${newNumber}`)
+			if (arr.length !== 1) {
+				this.myEval(arr)
 			} else {
-				newNumber = arr[indMinus - 1] - arr[indMinus + 1]
-				arr.splice(indMinus - 1, 3)
-				arr.splice(indMinus - 1, 0, `${newNumber}`)
+				return arr[0]
 			}
-		}
-		if (arr.length !== 1) {
-			this.myEval(arr)
-		} else {
 			return arr[0]
+		} else {
+			return ['Infinity']
 		}
-		return arr[0]
 	}
 
 	parseExpress(str) {
