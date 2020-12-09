@@ -19,6 +19,15 @@ class Calculator {
 		return this.memory.result
 	}
 
+	formatNumber(number) { //func for cut number to 10 symbols after dot
+		let formattedNumber = number.toString()
+		if (formattedNumber.indexOf('.') !== -1) {
+			return formattedNumber.substr(0, formattedNumber.indexOf('.') + 11)
+		} else {
+			return formattedNumber
+		}
+	}
+
 	myEval(arr) {
 		console.log('jui:', arr)
 		let indMulti = arr.indexOf("*")
@@ -33,7 +42,8 @@ class Calculator {
 					arr.splice(indMulti - 1, 3) //delete of two numbers and operator between them
 					arr.splice(indMulti - 1, 0, `${newNumber}`) //insert of one new number insted of two num and oper
 				} else {
-					newNumber = (arr[indDel - 1] / arr[indDel + 1]).toFixed(10)
+					newNumber = arr[indDel - 1] / arr[indDel + 1]
+					newNumber = this.formatNumber(newNumber)
 					arr.splice(indDel - 1, 3)
 					arr.splice(indDel - 1, 0, `${newNumber}`)
 				}
@@ -42,7 +52,8 @@ class Calculator {
 				arr.splice(indMulti - 1, 3)
 				arr.splice(indMulti - 1, 0, `${newNumber}`)
 			} else if (indMulti === -1 && indDel !== -1) { //div
-				newNumber = (arr[indDel - 1] / arr[indDel + 1]).toFixed(10)
+				newNumber = arr[indDel - 1] / arr[indDel + 1] //.toFixed(10)
+				newNumber = this.formatNumber(newNumber)
 				arr.splice(indDel - 1, 3)
 				arr.splice(indDel - 1, 0, `${newNumber}`)
 			} else if (indMulti == -1 && indDel == -1) { //addit and substr case check
@@ -96,11 +107,11 @@ class Calculator {
 	}
 
 	appendNumber(number) {
+
 		if (!this.calcStatus) {
-			this.express += number
+			this.express += number ///////////////////
 			this.calcStatus = false
 		}
-
 	}
 
 	appendOperation(operation) {
@@ -151,6 +162,7 @@ class Calculator {
 		if (this.express == 'Infinity' || this.express == '-Infinity') {
 			displayInput.value = "ERROR"
 			this.resetCalc()
+			this.calcStatus = false
 		}
 		else {
 			displayInput.value = this.express
