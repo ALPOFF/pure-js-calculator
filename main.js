@@ -44,15 +44,17 @@ class Calculator {
 			newNumber = arr[indDel - 1] / arr[indDel + 1]
 			arr.splice(indDel - 1, 3)
 			arr.splice(indDel - 1, 0, `${newNumber}`)
-		} else if (indMulti == -1 && indDel == -1) { //addit and substr case
-			if (indPlus === -1) {
-				newNumber = arr[indMinus - 1] - arr[indMinus + 1]
-				arr.splice(indMinus - 1, 3)
-				arr.splice(indMinus - 1, 0, `${newNumber}`)
-			} else {
+		} else if (indMulti == -1 && indDel == -1) { //addit and substr case check
+			if (indMinus === -1) {
+				console.log('here 2')
 				newNumber = parseInt(arr[indPlus - 1]) + parseInt(arr[indPlus + 1])
 				arr.splice(indPlus - 1, 3)
 				arr.splice(indPlus - 1, 0, `${newNumber}`)
+			} else {
+				console.log('here 1')
+				newNumber = arr[indMinus - 1] - arr[indMinus + 1]
+				arr.splice(indMinus - 1, 3)
+				arr.splice(indMinus - 1, 0, `${newNumber}`)
 			}
 		}
 		if (arr.length !== 1) {
