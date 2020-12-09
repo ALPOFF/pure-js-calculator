@@ -32,7 +32,7 @@ class Calculator {
 				arr.splice(indMulti - 1, 3) //delete of two numbers and operator between them
 				arr.splice(indMulti - 1, 0, `${newNumber}`) //insert of one new number insted of two num and oper
 			} else {
-				newNumber = arr[indDel - 1] / arr[indDel + 1]
+				newNumber = (arr[indDel - 1] / arr[indDel + 1]).toFixed(10)
 				arr.splice(indDel - 1, 3)
 				arr.splice(indDel - 1, 0, `${newNumber}`)
 			}
@@ -41,7 +41,7 @@ class Calculator {
 			arr.splice(indMulti - 1, 3)
 			arr.splice(indMulti - 1, 0, `${newNumber}`)
 		} else if (indMulti === -1 && indDel !== -1) { //div
-			newNumber = arr[indDel - 1] / arr[indDel + 1]
+			newNumber = (arr[indDel - 1] / arr[indDel + 1]).toFixed(10)
 			arr.splice(indDel - 1, 3)
 			arr.splice(indDel - 1, 0, `${newNumber}`)
 		} else if (indMulti == -1 && indDel == -1) { //addit and substr case check
