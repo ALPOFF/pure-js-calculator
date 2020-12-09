@@ -117,11 +117,13 @@ class Calculator {
 	}
 
 	saveInMemory() {
-		this.memory.result = this.express
-		memoryIndicator.style.backgroundColor = 'green'
+		if (this.calcStatus) {
+			this.memory.result = this.express
+			memoryIndicator.style.backgroundColor = 'green'
+		}
 	}
 
-	readFromMmory() {
+	readFromMemory() {
 		if (this.memory.result) {
 			this.express += this.memory.result
 		}
@@ -215,7 +217,7 @@ memoryButton.addEventListener('click', button => {
 
 memoryReadButton.addEventListener('click', button => {
 	if (myCalc.memRes() !== '') {
-		myCalc.readFromMmory()
+		myCalc.readFromMemory()
 		myCalc.updateDisplay()
 	}
 })
