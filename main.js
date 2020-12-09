@@ -94,12 +94,12 @@ class Calculator {
 	appendNumber(number) {
 		if (!this.calcStatus) {
 			this.express += number
+			this.calcStatus = false
 		}
-		this.calcStatus = false
+
 	}
 
 	appendOperation(operation) {
-		this.calcStatus = false
 		let arr = this.express.split(" ")
 
 		if (arr[arr.length - 1] === '') { //check for prev oper, if it exist replace it with new
@@ -109,10 +109,12 @@ class Calculator {
 				? arr.push('* ')
 				: arr.push(`${operation} `)
 			this.express = arr.join(' ')
+			this.calcStatus = false
 		} else {
 			operation === "x"
 				? this.express += ' * '
 				: this.express += ` ${operation} `
+			this.calcStatus = false
 		}
 	}
 
