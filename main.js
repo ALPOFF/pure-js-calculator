@@ -46,12 +46,10 @@ class Calculator {
 			arr.splice(indDel - 1, 0, `${newNumber}`)
 		} else if (indMulti == -1 && indDel == -1) { //addit and substr case check
 			if (indMinus === -1) {
-				console.log('here 2')
 				newNumber = parseInt(arr[indPlus - 1]) + parseInt(arr[indPlus + 1])
 				arr.splice(indPlus - 1, 3)
 				arr.splice(indPlus - 1, 0, `${newNumber}`)
 			} else {
-				console.log('here 1')
 				newNumber = arr[indMinus - 1] - arr[indMinus + 1]
 				arr.splice(indMinus - 1, 3)
 				arr.splice(indMinus - 1, 0, `${newNumber}`)
@@ -67,7 +65,6 @@ class Calculator {
 
 	parseExpress(str) {
 		const arr = str.split(" ")
-		console.log(arr)
 		return this.myEval(arr)
 	}
 
@@ -97,33 +94,26 @@ class Calculator {
 	appendNumber(number) {
 		if (!this.calcStatus) {
 			this.express += number
-			console.log(this.express)
 		}
 		this.calcStatus = false
 	}
 
 	appendOperation(operation) {
 		this.calcStatus = false
-
-
 		let arr = this.express.split(" ")
 
 		if (arr[arr.length - 1] === '') { //check for prev oper, if it exist replace it with new
-			console.log('fck')
 			arr.pop()
 			arr.pop()
-			console.log(arr)
 			operation === "x"
 				? arr.push('* ')
 				: arr.push(`${operation} `)
 			this.express = arr.join(' ')
-			console.log('1', this.express)
 		} else {
 			operation === "x"
 				? this.express += ' * '
 				: this.express += ` ${operation} `
 		}
-		console.log('posle:', this.express.split(" "))
 	}
 
 	saveInMemory() {
@@ -150,7 +140,7 @@ class Calculator {
 	}
 
 	updateDisplay() {
-		if (this.express == 'Infinity') {
+		if (this.express == 'Infinity' || this.express == '-Infinity') {
 			displayInput.value = "ERROR"
 			this.resetCalc()
 		}
