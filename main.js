@@ -29,13 +29,13 @@ class Calculator {
 	}
 
 	myEval(arr) {
-		console.log('jui:', arr)
 		let indMulti = arr.indexOf("*")
 		let indDel = arr.indexOf("/")
 		let indPlus = arr.indexOf("+")
 		let indMinus = arr.indexOf("-")
 		let newNumber = null
 		if (arr.indexOf('Infinity') === -1) {
+
 			if (indMulti !== -1 && indDel !== -1) { //div and mult
 				if (indMulti < indDel) { //mult
 					newNumber = arr[indMulti - 1] * arr[indMulti + 1]
@@ -67,9 +67,11 @@ class Calculator {
 					arr.splice(indMinus - 1, 0, `${newNumber}`)
 				}
 			}
+
 			if (arr.length !== 1) {
 				this.myEval(arr)
 			} else {
+				console.log("here", arr)
 				return arr[0]
 			}
 			return arr[0]
@@ -80,7 +82,11 @@ class Calculator {
 
 	parseExpress(str) {
 		const arr = str.split(" ")
-		return this.myEval(arr)
+		if (arr.length === 1) {
+			return arr[0]
+		} else {
+			return this.myEval(arr)
+		}
 	}
 
 	resetCalc() {
@@ -100,7 +106,9 @@ class Calculator {
 		if (this.express === '') {
 			displayInput.value = "0"
 		} else {
+
 			this.express = this.parseExpress(this.express)
+
 			this.result = parseInt(this.express)
 		}
 		this.calcStatus = true
@@ -109,7 +117,7 @@ class Calculator {
 	appendNumber(number) {
 
 		if (!this.calcStatus) {
-			this.express += number ///////////////////
+			this.express += number
 			this.calcStatus = false
 		}
 	}
