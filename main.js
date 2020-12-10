@@ -9,6 +9,7 @@ class Calculator {
 		},
 			this.calcStatus = false
 		this.operStatus = false
+		this.resStatus = false
 	}
 
 	express() {
@@ -112,11 +113,16 @@ class Calculator {
 			this.result = parseInt(this.express)
 		}
 		this.calcStatus = true
+		this.resStatus = true
 	}
 
 	appendNumber(number) {
-
-		if (!this.calcStatus) {
+		if (this.resStatus) {
+			this.clearDisplay()
+			this.express += number
+			this.calcStatus = false
+			this.resStatus = false
+		} else {
 			this.express += number
 			this.calcStatus = false
 		}
