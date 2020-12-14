@@ -10,6 +10,7 @@ class Calculator {
 			this.calcStatus = false
 		this.operStatus = false
 		this.resStatus = false
+		this.expressBuffer = ''
 	}
 
 	express() {
@@ -54,6 +55,9 @@ class Calculator {
 				arr.splice(indMulti - 1, 0, `${newNumber}`)
 			} else if (indMulti === -1 && indDel !== -1) { //div
 				newNumber = arr[indDel - 1] / arr[indDel + 1] //.toFixed(10)
+				if (newNumber == 'Infinity') {
+					return ['Infinity']
+				}
 				newNumber = this.formatNumber(newNumber)
 				arr.splice(indDel - 1, 3)
 				arr.splice(indDel - 1, 0, `${newNumber}`)
@@ -104,13 +108,31 @@ class Calculator {
 	}
 
 	compute() {
+
+		console.log(this.resStatus)
 		if (this.express === '') {
 			displayInput.value = "0"
 		} else {
+			if (this.expressBuffer === '') {
+				this.expressBuffer = this.express
+			}
 
-			this.express = this.parseExpress(this.express)
+			if (this.resStatus) {
 
-			this.result = parseInt(this.express)
+				let expressBufferArr = this.expressBuffer.split(' ')
+
+				expressBufferArr.shift() //get oper and prev number
+				console.log(expressBufferArr)
+				console.log(expressBufferArr)
+				let newExp = this.express + ` ${expressBufferArr.join(' ')}`
+				console.log(newExp)
+
+				this.express = this.parseExpress(newExp)
+				this.result = parseInt(this.express)
+			} else {
+				this.express = this.parseExpress(this.express)
+				this.result = parseInt(this.express)
+			}
 		}
 		this.calcStatus = true
 		this.resStatus = true
