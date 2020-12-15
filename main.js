@@ -108,8 +108,6 @@ class Calculator {
 	}
 
 	compute() {
-
-		console.log(this.resStatus)
 		if (this.express === '') {
 			displayInput.value = "0"
 		} else {
@@ -140,6 +138,7 @@ class Calculator {
 
 	appendNumber(number) {
 		if (this.resStatus) {
+			console.log('here ')
 			this.clearDisplay()
 			this.express += number
 			this.calcStatus = false
@@ -161,12 +160,15 @@ class Calculator {
 				: arr.push(`${operation} `)
 			this.express = arr.join(' ')
 			this.calcStatus = false
+			this.resStatus = false
 		} else {
 			operation === "x"
 				? this.express += ' * '
 				: this.express += ` ${operation} `
 			this.calcStatus = false
+			this.resStatus = false
 		}
+		this.expressBuffer = ''
 	}
 
 	saveInMemory() {
